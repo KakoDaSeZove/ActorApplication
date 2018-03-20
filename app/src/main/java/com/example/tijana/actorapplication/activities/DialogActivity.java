@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,6 +32,8 @@ import static com.example.tijana.actorapplication.activities.SecondActivity.EXTR
 
 public class DialogActivity extends Activity {
 
+    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+
     private static final int SELECT_PICTURE = 1;
     private Actors actor = null;
     private ImageView preview;
@@ -40,6 +43,15 @@ public class DialogActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog);
+
+        //! Clean saved preferences
+        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+        editor.remove("dialogName");
+        editor.remove("dialogSurname");
+        editor.remove("dialogBio");
+        editor.remove("dialogRating");
+        editor.remove("dialogDate");
+        editor.commit();
     }
 
     public void onClickOK(View v) {
@@ -101,7 +113,6 @@ public class DialogActivity extends Activity {
         finish();
     }
 
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     @Override
     protected void onResume() {
@@ -114,6 +125,40 @@ public class DialogActivity extends Activity {
         }
 
         preview = (ImageView) findViewById(R.id.dialog_image);
+
+
+        EditText dialogName = (EditText) findViewById(R.id.edit_name);
+        EditText dialogSurname = (EditText) findViewById(R.id.edit_surname);
+        EditText dialogBio = (EditText) findViewById(R.id.edit_bio);
+        RatingBar dialogRating = (RatingBar) findViewById(R.id.edit_rating);
+        EditText dialogDate = (EditText) findViewById(R.id.edit_date);
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        String actorNameStr = sharedPref.getString("dialogName", null);
+        if (actorNameStr != null) {
+            dialogName.setText(actorNameStr);
+        }
+
+        String actorSurnameStr = sharedPref.getString("dialogSurname", null);
+        if (actorSurnameStr != null) {
+            dialogSurname.setText(actorSurnameStr);
+        }
+
+        String actorBioStr = sharedPref.getString("dialogBio", null);
+        if (actorBioStr != null) {
+            dialogBio.setText(actorBioStr);
+        }
+
+        Float actorRatingFl = sharedPref.getFloat("dialogRating", 0);
+        if (actorRatingFl != null) {
+            dialogRating.setRating(actorRatingFl);
+        }
+
+        String actorDateStr = sharedPref.getString("dialogDate", null);
+        if (actorDateStr != null) {
+            dialogDate.setText(actorDateStr);
+        }
+
 
         if (getIntent().getExtras() != null) {
             Integer actorNo = (Integer) getIntent().getExtras().get(EXTRA_ACTORNO);
@@ -133,16 +178,27 @@ public class DialogActivity extends Activity {
                 e.printStackTrace();
             }
 
-            EditText dialogName = (EditText) findViewById(R.id.edit_name);
-            dialogName.setText(actor.getmName());
-            EditText dialogSurname = (EditText) findViewById(R.id.edit_surname);
-            dialogSurname.setText(actor.getmSurname());
-            EditText dialogBio = (EditText) findViewById(R.id.edit_bio);
-            dialogBio.setText(actor.getmBiography());
-            RatingBar dialogRating = (RatingBar) findViewById(R.id.edit_rating);
-            dialogRating.setRating(actor.getRating());
-            EditText dialogDate = (EditText) findViewById(R.id.edit_date);
-            dialogDate.setText(actor.getmDateOfBirth());
+            //! Use value from database instead from previous dialog
+            if(actorNameStr == null){
+                dialogName.setText(actor.getmName());
+            }
+
+            if(actorSurnameStr == null){
+                dialogSurname.setText(actor.getmSurname());
+            }
+
+            if(actorBioStr == null){
+                dialogBio.setText(actor.getmBiography());
+            }
+
+            if(actorRatingFl == null){
+                dialogRating.setRating(actor.getRating());
+            }
+
+            if(actorDateStr == null){
+                dialogDate.setText(actor.getmDateOfBirth());
+            }
+
 
             //! Must, must, must!!!
             if (imagePath == null) {
@@ -158,12 +214,35 @@ public class DialogActivity extends Activity {
                 }
             }
         } else {
-            File imgFile = new File(imagePath);
-            if (imgFile.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                preview.setImageBitmap(myBitmap);
+
+            if (imagePath != null) {
+                File imgFile = new File(imagePath);
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    preview.setImageBitmap(myBitmap);
+                }
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        EditText dialogName = (EditText) findViewById(R.id.edit_name);
+        EditText dialogSurname = (EditText) findViewById(R.id.edit_surname);
+        EditText dialogBio = (EditText) findViewById(R.id.edit_bio);
+        RatingBar dialogRating = (RatingBar) findViewById(R.id.edit_rating);
+        EditText dialogDate = (EditText) findViewById(R.id.edit_date);
+
+        SharedPreferences.Editor editor = getPreferences(Context.MODE_PRIVATE).edit();
+
+        editor.putString("dialogName", dialogName.getText().toString());
+        editor.putString("dialogSurname", dialogSurname.getText().toString());
+        editor.putString("dialogBio", dialogBio.getText().toString());
+        editor.putFloat("dialogRating", dialogRating.getRating());
+        editor.putString("dialogDate", dialogDate.getText().toString());
+        editor.commit();
     }
 
     public void onSelectImage(View v) {

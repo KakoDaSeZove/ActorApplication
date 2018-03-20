@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tijana.actorapplication">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -22,7 +22,8 @@
         <activity android:name=".activities.SecondActivity" />
         <activity android:name=".activities.DialogActivity" />
         <activity android:name=".activities.DialogMovieActivity" />
-        <activity android:name=".activities.PreferenceSettingsActivity"></activity>
+        <activity android:name=".activities.PreferenceSettingsActivity" />
+        <activity android:name=".activities.ImageActivity"></activity>
     </application>
 
 </manifest>

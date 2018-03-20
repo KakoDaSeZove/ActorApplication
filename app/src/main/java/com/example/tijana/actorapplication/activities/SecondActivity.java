@@ -16,6 +16,8 @@ import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -75,10 +77,13 @@ public class SecondActivity extends AppCompatActivity {
         }
 
         ImageView actorImage = (ImageView) findViewById(R.id.actor_image);
-        File imgFile = new File(actor.getmImage());
-        if (imgFile.exists()) {
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            actorImage.setImageBitmap(myBitmap);
+
+        if (actor.getmImage() != null) {
+            File imgFile = new File(actor.getmImage());
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                actorImage.setImageBitmap(myBitmap);
+            }
         }
 
         TextView actorName = (TextView) findViewById(R.id.actor_name);
@@ -269,4 +274,13 @@ public class SecondActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void onImageClick(View v) {
+        Intent intent = new Intent(SecondActivity.this,
+                ImageActivity.class);
+        intent.putExtra(ImageActivity.EXTRA_ACTORIMAGE, actor.getmId());
+        startActivity(intent);
+    }
+
+
 }
