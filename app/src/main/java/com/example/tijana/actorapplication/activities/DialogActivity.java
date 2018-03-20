@@ -150,7 +150,7 @@ public class DialogActivity extends Activity {
         }
 
         Float actorRatingFl = sharedPref.getFloat("dialogRating", 0);
-        if (actorRatingFl != null) {
+        if (actorRatingFl != 0) {
             dialogRating.setRating(actorRatingFl);
         }
 
@@ -191,7 +191,7 @@ public class DialogActivity extends Activity {
                 dialogBio.setText(actor.getmBiography());
             }
 
-            if(actorRatingFl == null){
+            if(actorRatingFl == 0){
                 dialogRating.setRating(actor.getRating());
             }
 

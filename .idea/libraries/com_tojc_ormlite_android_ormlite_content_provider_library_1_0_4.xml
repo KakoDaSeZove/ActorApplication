@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.tojc.ormlite.android:ormlite-content-provider-library-1.0.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/ormlite-content-provider-library-1.0.4.aar/4abc9037652c69007a1409ed357d8f7e/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/ormlite-content-provider-library-1.0.4.aar/4abc9037652c69007a1409ed357d8f7e/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.tojc.ormlite.android/ormlite-content-provider-library/1.0.4/d531f9539b25c55ee860eff3343d0d61661008a5/ormlite-content-provider-library-1.0.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
